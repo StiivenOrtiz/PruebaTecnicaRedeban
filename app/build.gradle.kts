@@ -30,20 +30,41 @@ android {
     }
 
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
+            isDebuggable = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"https://test-android-redeban.proxy.beeceptor.com\""
+            )
+        }
+
+        getByName("debug") {
+            isDebuggable = true
+
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"https://test-android-redeban.proxy.beeceptor.com\""
+            )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
