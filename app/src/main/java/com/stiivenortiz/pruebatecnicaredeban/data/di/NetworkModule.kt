@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -24,7 +25,8 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(json.asConverterFactory("application/json; charset=UFT8".toMediaType()))
+            .addConverterFactory(ScalarsConverterFactory.create()) // for text/plain
+            .addConverterFactory(json.asConverterFactory("application/json; charset=UFT8".toMediaType())) // for json
             .build()
     }
 
