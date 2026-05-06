@@ -1,6 +1,7 @@
 package com.stiivenortiz.pruebatecnicaredeban.data.di
 
 import com.stiivenortiz.pruebatecnicaredeban.BuildConfig.BASE_URL
+import com.stiivenortiz.pruebatecnicaredeban.data.datasource.network.api.TransactionApiService
 import com.stiivenortiz.pruebatecnicaredeban.data.datasource.network.interceptors.TransactionInterceptor
 import dagger.Module
 import dagger.Provides
@@ -55,6 +56,12 @@ object NetworkModule {
         return HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
+    }
+
+    @Provides
+    @Singleton
+    fun provideTransactionApiService(retrofit: Retrofit): TransactionApiService {
+        return retrofit.create(TransactionApiService::class.java)
     }
 
 }

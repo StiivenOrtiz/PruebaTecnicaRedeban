@@ -42,7 +42,7 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                "\"https://test-android-redeban.proxy.beeceptor.com\""
+                "\"https://test-android-redeban.proxy.beeceptor.com/\""
             )
 
             buildConfigField(
@@ -58,7 +58,7 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                "\"https://test-android-redeban.proxy.beeceptor.com\""
+                "\"https://test-android-redeban.proxy.beeceptor.com/\""
             )
 
             buildConfigField(
