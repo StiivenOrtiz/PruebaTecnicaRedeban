@@ -118,7 +118,8 @@ dependencies {
 
     // Retrofit
     implementation(libs.retrofit)
-    implementation(libs.retrofit.adapter)
+    implementation(libs.retrofit.serialization)
+    implementation(libs.retrofit.scalars)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
 
