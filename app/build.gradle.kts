@@ -1,8 +1,16 @@
 plugins {
+    // Android
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.compose)
-}
 
+    // Kotlin
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
+
+    // Hilt
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+}
 android {
     namespace = "com.stiivenortiz.pruebatecnicaredeban"
     compileSdk {
@@ -40,19 +48,56 @@ android {
 }
 
 dependencies {
+
+    // Core Android
     implementation(libs.androidx.core.ktx)
+
+    // Lifecycle
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    // Activity
     implementation(libs.androidx.activity.compose)
+
+    // Compose / UI
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    // Icons--
+    implementation(libs.androidx.compose.material.icons.core)
+    // Constraint layout --
+    implementation(libs.constraint.layout)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    // DI
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation)
+    ksp(libs.hilt.compiler)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.adapter)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+
+    // Testing
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Compose testing
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+
+    // Debug
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
