@@ -26,8 +26,8 @@ data class TransactionEntity(
     @ColumnInfo(name = "status_description")
     val statusDescription: String? = null,
 
-    @ColumnInfo(name = "hex_data")
-    val hexData: String? = null,
+    @ColumnInfo(name = "pan_fingerprint")
+    val panFingerprint: String? = null,
 
     @ColumnInfo(name = "masked_card_number")
     val maskedCardNumber: String? = null,
