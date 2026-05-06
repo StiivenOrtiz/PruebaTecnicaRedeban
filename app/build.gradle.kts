@@ -124,7 +124,6 @@ dependencies {
     implementation(libs.okhttp.logging.interceptor)
 
     // Room
-
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
