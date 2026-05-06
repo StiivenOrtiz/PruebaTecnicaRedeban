@@ -44,6 +44,12 @@ android {
                 "BASE_URL",
                 "\"https://test-android-redeban.proxy.beeceptor.com\""
             )
+
+            buildConfigField(
+                "String",
+                "AUTHORIZATION",
+                "\"Basic MDAwMTIzMDAwQUJD\""
+            )
         }
 
         getByName("debug") {
@@ -53,6 +59,12 @@ android {
                 "String",
                 "BASE_URL",
                 "\"https://test-android-redeban.proxy.beeceptor.com\""
+            )
+
+            buildConfigField(
+                "String",
+                "AUTHORIZATION",
+                "\"Basic MDAwMTIzMDAwQUJD\""
             )
         }
     }
