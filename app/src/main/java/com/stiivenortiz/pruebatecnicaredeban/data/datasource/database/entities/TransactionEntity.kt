@@ -32,6 +32,12 @@ data class TransactionEntity(
     @ColumnInfo(name = "masked_card_number")
     val maskedCardNumber: String? = null,
 
+    @ColumnInfo(name = "operation_type")
+    val operationType: String,
+
+    @ColumnInfo(name = "parent_transaction_id")
+    val parentTransactionId: Long? = null,
+
     @ColumnInfo(name = "timestamp")
     val timestamp: Long
 
