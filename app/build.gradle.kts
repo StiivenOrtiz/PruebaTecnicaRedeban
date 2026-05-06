@@ -26,7 +26,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.stiivenortiz.pruebatecnicaredeban.HiltTestRunner"
     }
 
     buildTypes {
@@ -137,6 +137,10 @@ dependencies {
     // Compose testing
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+
+    // DI testing
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
 
     // Debug
     debugImplementation(libs.androidx.compose.ui.tooling)
