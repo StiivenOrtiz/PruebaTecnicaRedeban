@@ -27,28 +27,30 @@ class AuthorizeTransactionRepositoryTest {
 
     @Before
     fun init() {
-        // Esto inyecta las instancias REALES definidas en tus módulos de Hilt
         hiltRule.inject()
     }
 
     @Test
-    fun testRealNetworkCallWithHilt() = runTest {
+    fun givenValidAmount_whenAuthTransactionExecuted_thenTransactionIsPersistedAndReturned() = runTest {
+        // Given
         val amount = "99999"
+
+        // When
         val result = repository.authTransaction(amount)
 
+        // Then - result validation
         assertNotNull(result)
         assertEquals(amount, result.amount)
 
+        // Then - persistence validation
         val dbTx = database.getTransactionDao().getTransactionById(result.id)
 
         assertNotNull(dbTx)
-
-        Log.d("TEST_RESULT", "MODELO (Domain): $result")
-        Log.d("TEST_RESULT", "ENTIDAD (Room): $dbTx")
-
         assertEquals(TransactionInternalStatus.COMPLETED.name, dbTx?.internalStatus)
 
-        Log.i("TEST_RESULT", "Prueba finalizada con éxito para el monto: ${result.amount}")
+        // Logs (debug only, no assertions)
+        Log.d("TEST_RESULT", "MODEL (Domain): $result")
+        Log.d("TEST_RESULT", "ENTITY (Room): $dbTx")
     }
 
 }

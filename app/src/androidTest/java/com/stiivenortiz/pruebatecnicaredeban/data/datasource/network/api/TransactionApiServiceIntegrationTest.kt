@@ -28,7 +28,7 @@ class TransactionApiServiceIntegrationTest {
     @Test
     fun shouldSucceedWhenCallingAuthorizePaymentApiSmokeTest() = runTest {
         // Given: a valid authorization request
-        val request = AuthorizationRequest(amount = "15000")
+        val request = AuthorizationRequest(amount = "99999")
 
         // When: the authorize payment endpoint is called
         val response = api.authorizePayment(request)
