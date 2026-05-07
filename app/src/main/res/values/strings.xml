@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PruebaTecnicaRedeban</string>
+
+    <string name="Transaction_Column_Description_Component_Receipt_Text">Recibo</string>
+    <string name="Transaction_Column_Description_Component_Type_Text">Tipo</string>
+    <string name="Transaction_Column_Description_Component_Void_Text">Anulada</string>
+
 </resources>

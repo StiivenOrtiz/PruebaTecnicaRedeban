@@ -2,6 +2,11 @@ package com.stiivenortiz.pruebatecnicaredeban.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val success = Color(0xFF00D848)
+val failed = Color(0xFFDC362E)
+val informative = Color(0xFFFF9800)
+val onState = Color(0xFFFFFFFF)
+
 val primaryLight = Color(0xFF00D8A1)
 val onPrimaryLight = Color(0xFF00382A)
 val primaryContainerLight = Color(0xFFA7F5DE)
