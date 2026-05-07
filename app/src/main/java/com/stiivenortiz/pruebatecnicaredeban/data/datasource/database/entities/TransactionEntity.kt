@@ -17,14 +17,17 @@ data class TransactionEntity(
     @ColumnInfo(name = "amount")
     val amount: String,
 
-    @ColumnInfo(name = "status")
-    val status: String,
+    @ColumnInfo(name = "internal_status")
+    val internalStatus: String,
 
-    @ColumnInfo(name = "status_code")
-    val statusCode: String,
+    @ColumnInfo(name = "business_status")
+    val businessStatus: String? = null,
 
-    @ColumnInfo(name = "status_description")
-    val statusDescription: String? = null,
+    @ColumnInfo(name = "business_status_code")
+    val businessStatusCode: String? = null,
+
+    @ColumnInfo(name = "business_status_description")
+    val businessStatusDescription: String? = null,
 
     @ColumnInfo(name = "pan_fingerprint")
     val panFingerprint: String? = null,

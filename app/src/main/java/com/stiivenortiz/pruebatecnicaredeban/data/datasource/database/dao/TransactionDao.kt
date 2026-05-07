@@ -25,7 +25,7 @@ interface TransactionDao {
             SELECT 1 FROM transactions 
             WHERE parent_transaction_id = :saleId 
             AND operation_type = 'VOID' 
-            AND status = 'APPROVED'
+            AND business_status = 'APPROVED'
         )
     """
     )
@@ -43,15 +43,24 @@ interface TransactionDao {
     @Update
     suspend fun updateTransaction(transaction: TransactionEntity)
 
-    @Query("UPDATE transactions SET status = :newStatus, status_code = :newStatusCode, status_description = :newStatusDescription WHERE transaction_id = :id")
+    @Query(
+        """
+        UPDATE transactions 
+        SET internal_status = :internalStatus, 
+            business_status = :businessStatus, 
+            business_status_code = :businessStatusCode, 
+            business_status_description = :description 
+        WHERE transaction_id = :id
+    """
+    )
     suspend fun updateTransactionStatus(
         id: Long,
-        newStatus: String,
-        newStatusCode: String,
-        newStatusDescription: String?
+        internalStatus: String,
+        businessStatus: String?,
+        businessStatusCode: String?,
+        description: String?
     )
 
     @Query("SELECT * FROM transactions WHERE transaction_id = :id LIMIT 1")
     suspend fun getTransactionById(id: Long): TransactionEntity?
-
 }
