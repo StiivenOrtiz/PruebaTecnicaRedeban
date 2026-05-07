@@ -21,7 +21,7 @@ data class TransactionEntity(
     val internalStatus: String,
 
     @ColumnInfo(name = "business_status")
-    val businessStatus: String? = null,
+    val businessStatus: String,
 
     @ColumnInfo(name = "business_status_code")
     val businessStatusCode: String? = null,
