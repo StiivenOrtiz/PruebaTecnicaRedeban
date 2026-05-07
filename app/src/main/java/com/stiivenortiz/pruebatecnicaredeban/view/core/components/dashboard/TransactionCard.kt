@@ -1,6 +1,7 @@
 package com.stiivenortiz.pruebatecnicaredeban.view.core.components.dashboard
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
@@ -31,6 +33,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.stiivenortiz.pruebatecnicaredeban.R
 import com.stiivenortiz.pruebatecnicaredeban.ui.theme.failed
 import com.stiivenortiz.pruebatecnicaredeban.ui.theme.informative
+import com.stiivenortiz.pruebatecnicaredeban.ui.theme.onState
 import com.stiivenortiz.pruebatecnicaredeban.ui.theme.success
 import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiModel
 
@@ -70,7 +73,7 @@ fun TransactionCard(
                 val (amountElement, receiptElement, operationElement, cardElement, dateElement, statusElement, voidedElement) = createRefs()
 
                 Text(
-                    "$200.000",
+                    model.amount,
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.headlineMedium,
                     textDecoration = if (model.isVoided) TextDecoration.LineThrough else TextDecoration.None,
@@ -99,7 +102,7 @@ fun TransactionCard(
                     )
 
                     Text(
-                        "1234 56** **** 7890",
+                        model.maskPan,
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.titleMedium,
                     )
@@ -111,7 +114,7 @@ fun TransactionCard(
                         start.linkTo(parent.start)
                     },
                     title = stringResource(R.string.Transaction_Column_Description_Component_Type_Text),
-                    value = "Compra"
+                    value = model.type
                 )
 
                 TransactionColumnDescription(
@@ -123,11 +126,11 @@ fun TransactionCard(
                             end.linkTo(statusElement.start)
                         },
                     title = stringResource(R.string.Transaction_Column_Description_Component_Receipt_Text),
-                    value = "123456"
+                    value = model.receiptId
                 )
 
                 Text(
-                    "10:15 AM | 7 Mayo, 2026",
+                    model.date,
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier.constrainAs(dateElement) {
@@ -153,6 +156,16 @@ fun TransactionCard(
                             end.linkTo(parent.end)
                             bottom.linkTo(parent.bottom)
                         }
+                        .offset(x = 12.dp)
+                        .background(
+                            informative, RoundedCornerShape(
+                                topStart = 20.dp,
+                                topEnd = 0.dp,
+                                bottomEnd = 0.dp,
+                                bottomStart = 20.dp,
+                            )
+                        )
+                        .padding(end = 20.dp, top = 4.dp, bottom = 4.dp, start = 4.dp)
                         .visible(model.isVoided)) {
                     Icon(imageVector = Icons.Default.Close, contentDescription = null)
                     Text(
@@ -169,13 +182,13 @@ fun TransactionCard(
                 .size(36.dp)
                 .align(Alignment.CenterStart)
                 .offset(x = (0).dp)
-                .background(informative, CircleShape),
+                .background(colorIcon, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = imageVector,
                 contentDescription = null,
-                tint = colorIcon
+                tint = onState
             )
         }
     }

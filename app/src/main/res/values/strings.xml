@@ -4,5 +4,8 @@
     <string name="Transaction_Column_Description_Component_Receipt_Text">Recibo</string>
     <string name="Transaction_Column_Description_Component_Type_Text">Tipo</string>
     <string name="Transaction_Column_Description_Component_Void_Text">Anulada</string>
+    <string name="Dashboard_Screen_Payments_Text">¡En pagos!</string>
+    <string name="Dashboard_Screen_History_Text">Historial de transacciones</string>
+    <string name="Dashboard_Screen_Charge_Text">Cobrar</string>
 
 </resources>
