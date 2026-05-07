@@ -9,6 +9,7 @@ data class TransactionModel(
     val internalStatus: TransactionInternalStatus,
     val businessStatus: TransactionBusinessStatus?,
     val businessStatusDescription: String?,
+    val isVoided: Boolean,
     val maskedCardNumber: String?,
     val timestamp: Long
 

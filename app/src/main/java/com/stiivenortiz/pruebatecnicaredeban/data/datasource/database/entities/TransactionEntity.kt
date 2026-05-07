@@ -41,6 +41,9 @@ data class TransactionEntity(
     @ColumnInfo(name = "parent_transaction_id")
     val parentTransactionId: Long? = null,
 
+    @ColumnInfo(name = "is_voided")
+    val isVoided: Boolean = false,
+
     @ColumnInfo(name = "timestamp")
     val timestamp: Long
 

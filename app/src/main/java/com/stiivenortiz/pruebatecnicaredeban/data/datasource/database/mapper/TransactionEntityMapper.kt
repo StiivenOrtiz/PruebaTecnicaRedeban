@@ -17,6 +17,7 @@ fun TransactionEntity.toDomain(): TransactionModel {
         businessStatus = TransactionBusinessStatus.valueOf(businessStatus),
         businessStatusDescription = businessStatusDescription,
         maskedCardNumber = maskedCardNumber,
+        isVoided = isVoided,
         timestamp = timestamp
     )
 

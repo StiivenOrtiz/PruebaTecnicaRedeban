@@ -17,7 +17,7 @@ interface TransactionDao {
     fun getAllTransactions(): PagingSource<Int, TransactionEntity>
 
     @Query("SELECT * FROM transactions WHERE parent_transaction_id = :saleId AND operation_type = 'VOID' ORDER BY timestamp ASC")
-    suspend fun getVoidAttemptsForTransaction(saleId: Long): List<TransactionEntity>
+    fun getVoidAttemptsForTransaction(saleId: Long): Flow<List<TransactionEntity>>
 
     @Query(
         """
