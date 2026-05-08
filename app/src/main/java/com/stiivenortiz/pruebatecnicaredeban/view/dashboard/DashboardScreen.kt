@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -82,33 +84,37 @@ fun DashboardScreen(
                     textAlign = TextAlign.Center
                 )
 
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.outline)
-                        .padding(top = 8.dp, start = 8.dp, end = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
+                if (!uiState.isLoading && uiState.transactions.isEmpty()) {
+                    EmptyHistoryMessage()
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.outline)
+                            .padding(top = 8.dp, start = 8.dp, end = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
 
-                    items(
-                        items = uiState.transactions,
-                        key = { it.id }
-                    ) { item ->
+                        items(
+                            items = uiState.transactions,
+                            key = { it.id }
+                        ) { item ->
 
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 4.dp)
-                                .clickable { onTransactionClick(item.id) },
-                            shape = RoundedCornerShape(20.dp),
-                            elevation = CardDefaults.cardElevation(
-                                defaultElevation = 6.dp
-                            ),
-                            colors = CardDefaults.cardColors(
-                                containerColor = Color.Transparent
-                            )
-                        ) {
-                            TransactionCard(model = item)
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 4.dp)
+                                    .clickable { onTransactionClick(item.id) },
+                                shape = RoundedCornerShape(20.dp),
+                                elevation = CardDefaults.cardElevation(
+                                    defaultElevation = 6.dp
+                                ),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = Color.Transparent
+                                )
+                            ) {
+                                TransactionCard(model = item)
+                            }
                         }
                     }
                 }
@@ -126,6 +132,38 @@ fun DashboardScreen(
                     CircularProgressIndicator()
                 }
         }
+    }
+}
+
+@Composable
+private fun EmptyHistoryMessage() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.outline)
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = Icons.Default.Star,
+            contentDescription = null,
+            modifier = Modifier.size(80.dp),
+            tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)
+        )
+        Text(
+            text = "No hay transacciones todavía",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 16.dp)
+        )
+        Text(
+            text = "Las ventas que realices aparecerán en este historial.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.4f),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -167,7 +205,7 @@ private fun AddTransactionFab(
         modifier = Modifier
             .size(110.dp)
             .navigationBarsPadding(),
-        shape = RoundedCornerShape(50),
+        shape = RoundedCornerShape(100),
         containerColor = MaterialTheme.colorScheme.primary
     ) {
 

@@ -82,7 +82,7 @@ fun PaymentStatusScreen(
                 ) {
 
                     Button(
-                        onClick = { onFinished(state.transactionId) },
+                        onClick = { onFinished(state.transactionId!!) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary

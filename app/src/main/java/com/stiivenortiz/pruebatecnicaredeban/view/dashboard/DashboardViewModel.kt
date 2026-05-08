@@ -2,114 +2,44 @@ package com.stiivenortiz.pruebatecnicaredeban.view.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiModel
-import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiStatus
-import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiType
+import com.stiivenortiz.pruebatecnicaredeban.domain.mapper.toUiModel
+import com.stiivenortiz.pruebatecnicaredeban.domain.model.TransactionBusinessStatus
+import com.stiivenortiz.pruebatecnicaredeban.domain.usecase.GetTransactionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
+    private val getTransactionsUseCase: GetTransactionsUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(
-        DashboardUiState(
-            isLoading = true
-        )
-    )
+    val uiState: StateFlow<DashboardUiState> = getTransactionsUseCase()
+        .map { transactions ->
+            val uiTransactions = transactions.map { it.toUiModel() }
 
-    val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
+            val totalRaw = transactions
+                .filter { !it.isVoided && it.businessStatus == TransactionBusinessStatus.APPROVED }
+                .sumOf { it.amount.toLongOrNull() ?: 0L }
 
-    init {
-        loadTransactions()
-    }
-
-    private fun loadTransactions() {
-
-        viewModelScope.launch {
-
-            _uiState.update {
-                it.copy(
-                    isLoading = true,
-                    errorMessage = null
-                )
-            }
-
-            delay(5000)
-
-            val mockTransactions = List(10) { index ->
-
-                val amount = ((1..9).random() * 100_000).toString()
-
-                TransactionUiModel(
-                    id = index.toLong(),
-
-                    amount = "$$amount",
-
-                    maskPan = buildString {
-                        append((1000..9999).random())
-                        append(" ")
-                        append((10..99).random())
-                        append("** **** ")
-                        append((1000..9999).random())
-                    },
-
-                    type = listOf(
-                        TransactionUiType.SALE,
-                        TransactionUiType.VOID
-                    ).random(),
-
-                    receiptId = (10000000..99999999)
-                        .random()
-                        .toString(),
-
-                    date = listOf(
-                        "8:27 am | 7 mayo, 2026",
-                        "2:10 pm | 6 mayo, 2026",
-                        "11:42 am | 5 mayo, 2026",
-                        "9:05 am | 4 mayo, 2026"
-                    ).random(),
-
-                    status = listOf(
-                        TransactionUiStatus.APPROVED,
-                        TransactionUiStatus.PENDING,
-                        TransactionUiStatus.DECLINED
-                    ).random(),
-
-                    isVoided = listOf(
-                        true,
-                        false
-                    ).random()
-                )
-            }
-
-            val totalAmount = mockTransactions.sumOf {
-
-                it.amount
-                    .replace("$", "")
-                    .toLongOrNull() ?: 0
-            }
-
-            _uiState.update {
-
-                it.copy(
-                    isLoading = false,
-
-                    transactions = mockTransactions,
-
-                    totalAmount = "$${
-                        "%,d"
-                            .format(totalAmount)
-                            .replace(",", ".")
-                    }"
-                )
-            }
+            DashboardUiState(
+                isLoading = false,
+                transactions = uiTransactions,
+                totalAmount = formatTotal(totalRaw)
+            )
         }
+        .onStart { emit(DashboardUiState(isLoading = true)) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = DashboardUiState(isLoading = true)
+        )
+
+    private fun formatTotal(total: Long): String {
+        return "$${"%,d".format(total).replace(",", ".")}"
     }
 }

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 interface TransactionDao {
 
     @Query("SELECT * FROM transactions ORDER BY timestamp DESC")
-    fun getAllTransactions(): PagingSource<Int, TransactionEntity>
+    fun getAllTransactions(): Flow<List<TransactionEntity>>
 
     @Query("SELECT * FROM transactions WHERE parent_transaction_id = :saleId AND operation_type = 'VOID' ORDER BY timestamp ASC")
     fun getVoidAttemptsForTransaction(saleId: Long): Flow<List<TransactionEntity>>

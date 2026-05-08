@@ -4,9 +4,11 @@ import com.stiivenortiz.pruebatecnicaredeban.data.datasource.database.dao.Transa
 import com.stiivenortiz.pruebatecnicaredeban.data.datasource.network.api.TransactionApiService
 import com.stiivenortiz.pruebatecnicaredeban.data.repository.AnnulmentTransactionRepositoryImpl
 import com.stiivenortiz.pruebatecnicaredeban.data.repository.AuthorizeTransactionRepositoryImpl
+import com.stiivenortiz.pruebatecnicaredeban.data.repository.TransactionRepositoryImpl
 import com.stiivenortiz.pruebatecnicaredeban.data.security.SecurityProcessor
 import com.stiivenortiz.pruebatecnicaredeban.domain.repository.AnnulmentTransactionRepository
 import com.stiivenortiz.pruebatecnicaredeban.domain.repository.AuthorizeTransactionRepository
+import com.stiivenortiz.pruebatecnicaredeban.domain.repository.TransactionRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,6 +40,13 @@ object DataModule {
             api = transactionApiService,
             dao = transactionDao
         )
+    }
+
+    @Provides
+    fun provideTransactionRepository(
+        transactionDao: TransactionDao,
+    ): TransactionRepository {
+        return TransactionRepositoryImpl(dao = transactionDao)
     }
 
 }
