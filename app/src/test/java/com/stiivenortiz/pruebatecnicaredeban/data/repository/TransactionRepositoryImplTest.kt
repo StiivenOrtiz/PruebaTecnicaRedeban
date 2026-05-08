@@ -55,7 +55,7 @@ class TransactionRepositoryImplTest {
 
         // THEN
         assertNotNull(result)
-        assertEquals(id, result.id)
+        assertEquals(id, result?.id)
         verify(exactly = 1) { dao.getTransactionByIdFlow(id) }
     }
 
