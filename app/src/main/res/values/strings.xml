@@ -30,13 +30,13 @@
     <string name="payment_status_finish">Finalizar</string>
     <string name="payment_status_starting">Iniciando transacción</string>
     <string name="payment_status_starting_description">Estamos preparando el cobro</string>
-    <string name="payment_status_pending">Pago pendiente</string>
+    <string name="payment_status_pending">Transacción pendiente</string>
     <string name="payment_status_pending_description">Esperando confirmación del datáfono</string>
-    <string name="payment_status_approved">Pago aprobado</string>
+    <string name="payment_status_approved">Transacción aprobada</string>
     <string name="payment_status_approved_description">La transacción fue realizada correctamente</string>
-    <string name="payment_status_declined">Pago declinado</string>
+    <string name="payment_status_declined">Transacción declinada</string>
     <string name="payment_status_declined_description">La entidad financiera rechazó la transacción</string>
-    <string name="payment_status_failed">Error en el pago</string>
+    <string name="payment_status_failed">Error en la transacción</string>
     <string name="payment_status_failed_description">Ocurrió un problema procesando la transacción</string>
 
     <string name="payment_amount_pay">Pagar</string>
