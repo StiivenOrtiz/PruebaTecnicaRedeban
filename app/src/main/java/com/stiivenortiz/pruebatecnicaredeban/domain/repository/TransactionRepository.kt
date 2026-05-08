@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface TransactionRepository {
     fun getTransactions() : Flow<List<TransactionModel>>
 
-    fun getTransaction(id: Long) : Flow<TransactionModel>
+    fun getTransaction(id: Long) : Flow<TransactionModel?>
 }

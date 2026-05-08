@@ -18,8 +18,8 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getTransaction(id: Long): Flow<TransactionModel> {
-        return dao.getTransactionByIdFlow(id).map { it?.toDomain() as TransactionModel }
+    override fun getTransaction(id: Long): Flow<TransactionModel?> {
+        return dao.getTransactionByIdFlow(id).map { it?.toDomain() }
     }
 
 }
