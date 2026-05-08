@@ -112,9 +112,9 @@ fun PaymentStatusScreen(
             AnimatedContent(
                 targetState = state.status,
                 label = "payment_status_animation"
-            ) { state ->
+            ) { stateT ->
 
-                when (state) {
+                when (stateT) {
 
                     PaymentStatusProcess.STARTING -> {
                         PaymentStatusContent(
@@ -124,7 +124,8 @@ fun PaymentStatusScreen(
                                 )
                             },
                             title = stringResource(R.string.payment_status_starting),
-                            description = stringResource(R.string.payment_status_starting_description)
+                            description = stringResource(R.string.payment_status_starting_description),
+                            businessDescription = state.businessStatusDescription
                         )
                     }
 
@@ -136,7 +137,8 @@ fun PaymentStatusScreen(
                                 )
                             },
                             title = stringResource(R.string.payment_status_pending),
-                            description = stringResource(R.string.payment_status_pending_description)
+                            description = stringResource(R.string.payment_status_pending_description),
+                            businessDescription = state.businessStatusDescription
                         )
                     }
 
@@ -150,7 +152,8 @@ fun PaymentStatusScreen(
                                 )
                             },
                             title = stringResource(R.string.payment_status_approved),
-                            description = stringResource(R.string.payment_status_approved_description)
+                            description = stringResource(R.string.payment_status_approved_description),
+                            businessDescription = state.businessStatusDescription
                         )
                     }
 
@@ -164,7 +167,8 @@ fun PaymentStatusScreen(
                                 )
                             },
                             title = stringResource(R.string.payment_status_declined),
-                            description = stringResource(R.string.payment_status_declined_description)
+                            description = stringResource(R.string.payment_status_declined_description),
+                            businessDescription = state.businessStatusDescription
                         )
                     }
 
@@ -178,7 +182,8 @@ fun PaymentStatusScreen(
                                 )
                             },
                             title = stringResource(R.string.payment_status_failed),
-                            description = stringResource(R.string.payment_status_failed_description)
+                            description = stringResource(R.string.payment_status_failed_description),
+                            businessDescription = state.businessStatusDescription
                         )
                     }
                 }
@@ -191,7 +196,8 @@ fun PaymentStatusScreen(
 private fun PaymentStatusContent(
     icon: @Composable () -> Unit,
     title: String,
-    description: String
+    description: String,
+    businessDescription: String? = null
 ) {
 
     Column(
@@ -222,6 +228,25 @@ private fun PaymentStatusContent(
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
             textAlign = TextAlign.Center
         )
+
+        if (businessDescription != null) {
+            Spacer(modifier = Modifier.size(16.dp))
+
+            Text(
+                text = stringResource(R.string.payment_status_business_description),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = businessDescription,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 

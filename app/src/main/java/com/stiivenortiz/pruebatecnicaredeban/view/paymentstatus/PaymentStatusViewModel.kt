@@ -38,7 +38,8 @@ class PaymentStatusViewModel @Inject constructor(
                         it.copy(
                             status = paymentProcess.paymentStatusProcess,
                             transactionId = paymentProcess.transactionId,
-                            isLoading = false
+                            isLoading = false,
+                            businessStatusDescription = paymentProcess.statusDescription
                         )
                     }
                 },

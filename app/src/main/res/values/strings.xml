@@ -38,10 +38,9 @@
     <string name="payment_status_declined_description">La entidad financiera rechazó la transacción</string>
     <string name="payment_status_failed">Error en la transacción</string>
     <string name="payment_status_failed_description">Ocurrió un problema procesando la transacción</string>
+    <string name="payment_status_business_description">Mensaje</string>
 
     <string name="payment_amount_pay">Pagar</string>
     <string name="payment_amount_enter_amount">Ingrese el monto</string>
-
-
 
 </resources>

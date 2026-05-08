@@ -64,6 +64,7 @@ fun TransactionModel.toUiPaymentProcess(): PaymentProcess {
 
             TransactionInternalStatus.NETWORK_ERROR -> PaymentStatusProcess.FAILED
             TransactionInternalStatus.UNKNOWN_ERROR -> PaymentStatusProcess.FAILED
-        }
+        },
+        statusDescription = businessStatusDescription
     )
 }
