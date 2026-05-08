@@ -3,6 +3,8 @@ package com.stiivenortiz.pruebatecnicaredeban.view.dashboard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiModel
+import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiStatus
+import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,9 +61,8 @@ class DashboardViewModel @Inject constructor(
                     },
 
                     type = listOf(
-                        "Compra",
-                        "Anulación",
-                        "Pago"
+                        TransactionUiType.SALE,
+                        TransactionUiType.VOID
                     ).random(),
 
                     receiptId = (10000000..99999999)
@@ -76,9 +77,9 @@ class DashboardViewModel @Inject constructor(
                     ).random(),
 
                     status = listOf(
-                        "Aprobada",
-                        "Pendiente",
-                        "Rechazada"
+                        TransactionUiStatus.APPROVED,
+                        TransactionUiStatus.PENDING,
+                        TransactionUiStatus.DECLINED
                     ).random(),
 
                     isVoided = listOf(
@@ -102,9 +103,11 @@ class DashboardViewModel @Inject constructor(
 
                     transactions = mockTransactions,
 
-                    totalAmount = "$${"%,d"
-                        .format(totalAmount)
-                        .replace(",", ".")}"
+                    totalAmount = "$${
+                        "%,d"
+                            .format(totalAmount)
+                            .replace(",", ".")
+                    }"
                 )
             }
         }

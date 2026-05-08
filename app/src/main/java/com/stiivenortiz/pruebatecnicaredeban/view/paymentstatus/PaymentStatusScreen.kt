@@ -32,19 +32,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.stiivenortiz.pruebatecnicaredeban.view.core.model.PaymentInput
 
 enum class PaymentStatus {
     STARTING,
@@ -54,39 +52,26 @@ enum class PaymentStatus {
     FAILED
 }
 
-@Preview
 @Composable
-fun PaymentStatusScreen() {
+fun PaymentStatusScreen(
+    input: PaymentInput,
+    viewModel: PaymentStatusViewModel = hiltViewModel(),
+    onFinished: (Long) -> Unit
+) {
 
-    var paymentStatus by remember {
-        mutableStateOf(PaymentStatus.STARTING)
-    }
+    val state by viewModel.uiState.collectAsState()
 
-    /**
-     * MOCK FLOW
-     */
-    LaunchedEffect(Unit) {
-
-        delay(10000)
-
-        paymentStatus = PaymentStatus.PENDING
-
-        delay(10000)
-
-        paymentStatus = listOf(
-            PaymentStatus.APPROVED,
-            PaymentStatus.DECLINED,
-            PaymentStatus.FAILED
-        ).random()
+    LaunchedEffect(input) {
+        viewModel.startTransaction(input)
     }
 
     Scaffold(
         bottomBar = {
 
             if (
-                paymentStatus == PaymentStatus.APPROVED ||
-                paymentStatus == PaymentStatus.DECLINED ||
-                paymentStatus == PaymentStatus.FAILED
+                state.status == PaymentStatus.APPROVED ||
+                state.status == PaymentStatus.DECLINED ||
+                state.status == PaymentStatus.FAILED
             ) {
 
                 Box(
@@ -97,9 +82,7 @@ fun PaymentStatusScreen() {
                 ) {
 
                     Button(
-                        onClick = {
-
-                        },
+                        onClick = { onFinished(state.transactionId) },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary
@@ -127,7 +110,7 @@ fun PaymentStatusScreen() {
         ) {
 
             AnimatedContent(
-                targetState = paymentStatus,
+                targetState = state.status,
                 label = "payment_status_animation"
             ) { state ->
 

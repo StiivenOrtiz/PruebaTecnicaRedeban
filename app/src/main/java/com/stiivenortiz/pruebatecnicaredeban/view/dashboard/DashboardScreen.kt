@@ -1,6 +1,7 @@
 package com.stiivenortiz.pruebatecnicaredeban.view.dashboard
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,12 +38,14 @@ import com.stiivenortiz.pruebatecnicaredeban.view.core.components.dashboard.Tran
 
 @Composable
 fun DashboardScreen(
-    viewModel: DashboardViewModel = hiltViewModel()
+    viewModel: DashboardViewModel = hiltViewModel(),
+    onTransactionClick: (Long) -> Unit,
+    onPayClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
-        floatingActionButton = { AddTransactionFab(onClick = {}) }
+        floatingActionButton = { AddTransactionFab(onClick = { onPayClick() }) }
     ) { paddingValues ->
 
         Box(
@@ -95,7 +98,8 @@ fun DashboardScreen(
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 4.dp),
+                                .padding(horizontal = 4.dp)
+                                .clickable { onTransactionClick(item.id) },
                             shape = RoundedCornerShape(20.dp),
                             elevation = CardDefaults.cardElevation(
                                 defaultElevation = 6.dp

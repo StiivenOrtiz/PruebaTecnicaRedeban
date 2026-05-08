@@ -114,7 +114,7 @@ fun TransactionCard(
                         start.linkTo(parent.start)
                     },
                     title = stringResource(R.string.transaction_column_description_component_type_text),
-                    value = model.type
+                    value = stringResource(model.type.toStringRes())
                 )
 
                 TransactionColumnDescription(

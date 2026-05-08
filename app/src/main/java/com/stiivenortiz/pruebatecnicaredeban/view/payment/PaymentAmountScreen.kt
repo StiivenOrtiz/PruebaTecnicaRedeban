@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -40,15 +41,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.stiivenortiz.pruebatecnicaredeban.ui.theme.informative
 import java.text.NumberFormat
 import java.util.Locale
 
-@Preview
 @Composable
-fun PaymentAmountScreen() {
+fun PaymentAmountScreen(
+    onCancel: () -> Unit,
+    onContinue: () -> Unit
+) {
 
     var amount by remember {
         mutableStateOf("")
@@ -63,7 +65,7 @@ fun PaymentAmountScreen() {
             val number = amount.toLongOrNull() ?: 0L
 
             NumberFormat
-                .getCurrencyInstance(Locale.of("es", "CO"))
+                .getCurrencyInstance(Locale("es", "CO"))
                 .format(number)
                 .replace(",00", "")
         }
@@ -81,9 +83,7 @@ fun PaymentAmountScreen() {
             ) {
 
                 Button(
-                    onClick = {
-
-                    },
+                    onClick = { onContinue() },
                     enabled = amount.isNotEmpty(),
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -144,7 +144,7 @@ fun PaymentAmountScreen() {
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(20.dp))
 
             NumericKeyboard(
                 onNumberClick = { number ->
@@ -157,8 +157,10 @@ fun PaymentAmountScreen() {
                         amount = amount.dropLast(1)
                     }
                 },
-                onCancelClick = {}
+                onCancelClick = { onCancel() }
             )
+
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }
@@ -184,16 +186,14 @@ private fun NumericKeyboard(
             .padding(bottom = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp),
-        userScrollEnabled = false
+        userScrollEnabled = true
     ) {
 
         items(keys) { key ->
-
             when (key) {
-
                 "cancel" -> {
                     KeyboardButton(
-                        onClick = onCancelClick,
+                        onClick = { onCancelClick() },
                         color = MaterialTheme.colorScheme.error
                     ) {
                         Icon(
