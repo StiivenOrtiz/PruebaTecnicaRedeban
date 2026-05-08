@@ -7,6 +7,6 @@ data class TransactionUiModel(
     val type: String,
     val receiptId: String,
     val date: String,
-    val status: String,
+    val status: TransactionUiStatus,
     val isVoided: Boolean
 )

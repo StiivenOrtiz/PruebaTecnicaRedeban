@@ -1,11 +1,16 @@
 <resources>
     <string name="app_name">PruebaTecnicaRedeban</string>
 
-    <string name="Transaction_Column_Description_Component_Receipt_Text">Recibo</string>
-    <string name="Transaction_Column_Description_Component_Type_Text">Tipo</string>
-    <string name="Transaction_Column_Description_Component_Void_Text">Anulada</string>
-    <string name="Dashboard_Screen_Payments_Text">¡En pagos!</string>
-    <string name="Dashboard_Screen_History_Text">Historial de transacciones</string>
-    <string name="Dashboard_Screen_Charge_Text">Cobrar</string>
+    <string name="transaction_column_description_component_receipt_text">Recibo</string>
+    <string name="transaction_column_description_component_type_text">Tipo</string>
+    <string name="transaction_column_description_component_void_text">Anulada</string>
+
+    <string name="dashboard_screen_payments_text">¡En pagos!</string>
+    <string name="dashboard_screen_history_text">Historial de transacciones</string>
+    <string name="dashboard_screen_charge_text">Cobrar</string>
+
+    <string name="transaction_status_approved">Aprobada</string>
+    <string name="transaction_status_declined">Declinada</string>
+    <string name="transaction_status_pending">Pendiente</string>
 
 </resources>

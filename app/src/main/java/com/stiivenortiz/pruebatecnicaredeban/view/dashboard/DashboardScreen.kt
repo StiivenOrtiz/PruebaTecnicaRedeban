@@ -61,7 +61,7 @@ fun DashboardScreen(
                 DashboardStatisticsCard(totalAmount = uiState.totalAmount)
 
                 Text(
-                    text = stringResource(R.string.Dashboard_Screen_History_Text),
+                    text = stringResource(R.string.dashboard_screen_history_text),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp)
@@ -147,7 +147,7 @@ private fun DashboardStatisticsCard(totalAmount: String) {
         )
 
         Text(
-            text = stringResource(R.string.Dashboard_Screen_Payments_Text),
+            text = stringResource(R.string.dashboard_screen_payments_text),
             color = MaterialTheme.colorScheme.onSecondary,
             style = MaterialTheme.typography.titleMedium
         )
@@ -174,13 +174,13 @@ private fun AddTransactionFab(
 
             Icon(
                 painter = painterResource(R.drawable.icon_charge),
-                contentDescription = stringResource(R.string.Dashboard_Screen_Payments_Text),
+                contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(42.dp)
             )
 
             Text(
-                text = stringResource(R.string.Dashboard_Screen_Charge_Text),
+                text = stringResource(R.string.dashboard_screen_charge_text),
                 color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.labelMedium
             )

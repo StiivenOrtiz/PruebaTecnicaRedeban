@@ -1,7 +1,6 @@
 package com.stiivenortiz.pruebatecnicaredeban.view.core.components.dashboard
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
@@ -35,7 +33,9 @@ import com.stiivenortiz.pruebatecnicaredeban.ui.theme.failed
 import com.stiivenortiz.pruebatecnicaredeban.ui.theme.informative
 import com.stiivenortiz.pruebatecnicaredeban.ui.theme.onState
 import com.stiivenortiz.pruebatecnicaredeban.ui.theme.success
+import com.stiivenortiz.pruebatecnicaredeban.view.core.mapper.toStringRes
 import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiModel
+import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiStatus
 
 @Composable
 fun TransactionCard(
@@ -43,13 +43,13 @@ fun TransactionCard(
 ) {
     val imageVector = when {
         model.isVoided -> Icons.Default.Info
-        model.status == "Aprobada" -> Icons.Default.Check
+        model.status == TransactionUiStatus.APPROVED -> Icons.Default.Check
         else -> Icons.Default.Close
     }
 
     val colorIcon = when {
         model.isVoided -> informative
-        model.status == "Aprobada" -> success
+        model.status == TransactionUiStatus.APPROVED -> success
         else -> failed
     }
 
@@ -113,7 +113,7 @@ fun TransactionCard(
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
                     },
-                    title = stringResource(R.string.Transaction_Column_Description_Component_Type_Text),
+                    title = stringResource(R.string.transaction_column_description_component_type_text),
                     value = model.type
                 )
 
@@ -125,7 +125,7 @@ fun TransactionCard(
                             start.linkTo(operationElement.end)
                             end.linkTo(statusElement.start)
                         },
-                    title = stringResource(R.string.Transaction_Column_Description_Component_Receipt_Text),
+                    title = stringResource(R.string.transaction_column_description_component_receipt_text),
                     value = model.receiptId
                 )
 
@@ -140,7 +140,7 @@ fun TransactionCard(
                 )
 
                 Text(
-                    model.status,
+                    stringResource(model.status.toStringRes()),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.constrainAs(statusElement) {
@@ -169,7 +169,7 @@ fun TransactionCard(
                         .visible(model.isVoided)) {
                     Icon(imageVector = Icons.Default.Close, contentDescription = null)
                     Text(
-                        stringResource(R.string.Transaction_Column_Description_Component_Void_Text),
+                        stringResource(R.string.transaction_column_description_component_void_text),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.titleMedium,
                     )
