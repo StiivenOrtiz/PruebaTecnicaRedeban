@@ -142,6 +142,12 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.compiler)
 
+    // Mockk
+    testImplementation(libs.mockk)
+
+    // Coroutines Tests
+    testImplementation(libs.kotlinx.coroutines.test)
+
     // Debug
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
