@@ -13,9 +13,13 @@ import java.util.Locale
 fun TransactionModel.toUiModel(): TransactionUiModel {
     val dateFormatter = SimpleDateFormat("HH:mm | dd MMM, yyyy", Locale.getDefault())
 
+    val parsedAmount = amount.toLongOrNull() ?: 0L
+    val isNegative = parsedAmount < 0
+    val absAmount = kotlin.math.abs(parsedAmount)
+
     val formattedAmount = try {
-        val parsedAmount = amount.toLongOrNull() ?: 0L
-        "$${"%,d".format(parsedAmount).replace(",", ".")}"
+        val formatted = "%,d".format(absAmount).replace(",", ".")
+        if (isNegative) "-$$formatted" else "$$formatted"
     } catch (e: Exception) {
         "$ $amount"
     }

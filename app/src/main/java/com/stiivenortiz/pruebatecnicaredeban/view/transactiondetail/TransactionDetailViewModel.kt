@@ -20,7 +20,7 @@ class TransactionDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val transactionId: Long = checkNotNull(savedStateHandle["transactionId"]) {
-        "No se encontró el transactionId en los argumentos de navegación"
+        "Required 'transactionId' argument is missing in navigation."
     }
 
     val uiState: StateFlow<TransactionDetailUiState> = getTransactionUseCase(transactionId)

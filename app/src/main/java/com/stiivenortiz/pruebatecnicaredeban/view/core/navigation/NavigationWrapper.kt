@@ -40,11 +40,8 @@ fun NavigationWrapper() {
 
             TransactionDetailScreen(
                 transactionId = args.transactionId,
-                onBack = {
-                    navController.popBackStack()
-                },
                 onVoid = {
-                    navController.navigate(PaymentStatus)
+                    navController.navigate(PaymentStatus(paymentInput = it))
                 },
                 onFinish = {
                     navController.popBackStack()
@@ -58,13 +55,14 @@ fun NavigationWrapper() {
                     navController.popBackStack()
                 },
                 onContinue = {
-                    navController.navigate(PaymentStatus(paymentInput = it))
+                    navController.navigate(PaymentStatus(paymentInput = it)) {
+                        popUpTo(Dashboard) { inclusive = false }
+                    }
                 }
             )
         }
 
         composable<PaymentStatus>(typeMap = mapOf(typeOf<PaymentInput>() to paymentInputType)) { backStackEntry ->
-
             val args = backStackEntry.toRoute<PaymentStatus>()
 
             PaymentStatusScreen(

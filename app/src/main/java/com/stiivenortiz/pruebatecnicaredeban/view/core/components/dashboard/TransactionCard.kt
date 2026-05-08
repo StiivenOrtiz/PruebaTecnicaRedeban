@@ -47,10 +47,16 @@ fun TransactionCard(
         else -> Icons.Default.Close
     }
 
-    val colorIcon = when {
+    val informativeColor = when {
         model.isVoided -> informative
         model.status == TransactionUiStatus.APPROVED -> success
         else -> failed
+    }
+
+    val visible = when (model.status) {
+        TransactionUiStatus.APPROVED -> true
+        TransactionUiStatus.DECLINED -> false
+        TransactionUiStatus.PENDING -> false
     }
 
     Box(
@@ -90,7 +96,8 @@ fun TransactionCard(
                             top.linkTo(amountElement.bottom)
                             start.linkTo(parent.start)
                             bottom.linkTo(receiptElement.top)
-                        }, verticalAlignment = Alignment.CenterVertically
+                        }
+                        .visible(visible), verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.icon_card),
@@ -124,7 +131,8 @@ fun TransactionCard(
                             bottom.linkTo(parent.bottom)
                             start.linkTo(operationElement.end)
                             end.linkTo(statusElement.start)
-                        },
+                        }
+                        .visible(visible),
                     title = stringResource(R.string.transaction_column_description_component_receipt_text),
                     value = model.receiptId
                 )
@@ -141,7 +149,7 @@ fun TransactionCard(
 
                 Text(
                     stringResource(model.status.toStringRes()),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = informativeColor,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.constrainAs(statusElement) {
                         top.linkTo(dateElement.bottom)
@@ -182,7 +190,7 @@ fun TransactionCard(
                 .size(36.dp)
                 .align(Alignment.CenterStart)
                 .offset(x = (0).dp)
-                .background(colorIcon, CircleShape),
+                .background(informativeColor, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Icon(

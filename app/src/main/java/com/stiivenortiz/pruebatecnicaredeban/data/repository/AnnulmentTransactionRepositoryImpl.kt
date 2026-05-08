@@ -23,7 +23,7 @@ class AnnulmentTransactionRepositoryImpl @Inject constructor(
         val transactionParent = dao.getTransactionById(transactionId) ?: return null
 
         val newTx = TransactionEntity(
-            amount = transactionParent.amount,
+            amount = "-${transactionParent.amount}",
             internalStatus = TransactionInternalStatus.PENDING.name,
             operationType = TransactionOperationType.VOID.name,
             businessStatus = TransactionBusinessStatus.PENDING.name,
@@ -38,7 +38,7 @@ class AnnulmentTransactionRepositoryImpl @Inject constructor(
 
         val annulmentRequest = AnnulmentRequest(
             receiptId = transactionParent.receiptId!!,
-            amount = transactionParent.amount
+            amount = "-${transactionParent.amount}"
         )
 
         return runCatching {

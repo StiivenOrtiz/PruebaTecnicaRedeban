@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.stiivenortiz.pruebatecnicaredeban.domain.mapper.toUiModel
 import com.stiivenortiz.pruebatecnicaredeban.domain.model.TransactionBusinessStatus
 import com.stiivenortiz.pruebatecnicaredeban.domain.usecase.GetTransactionsUseCase
+import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,15 +21,19 @@ class DashboardViewModel @Inject constructor(
 
     val uiState: StateFlow<DashboardUiState> = getTransactionsUseCase()
         .map { transactions ->
-            val uiTransactions = transactions.map { it.toUiModel() }
-
             val totalRaw = transactions
-                .filter { !it.isVoided && it.businessStatus == TransactionBusinessStatus.APPROVED }
-                .sumOf { it.amount.toLongOrNull() ?: 0L }
+                .filter { it.status == TransactionUiStatus.APPROVED }
+                .sumOf {
+                    it.amount
+                        .replace("$", "")
+                        .replace(".", "")
+                        .replace(",", "")
+                        .toLongOrNull() ?: 0L
+                }
 
             DashboardUiState(
                 isLoading = false,
-                transactions = uiTransactions,
+                transactions = transactions,
                 totalAmount = formatTotal(totalRaw)
             )
         }
