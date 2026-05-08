@@ -113,6 +113,7 @@ Puedes compilar el proyecto directamente desde Android Studio o mediante la term
 
 # Instalar en dispositivo conectado
 ./gradlew installDebug
+```
 
 ---
 
