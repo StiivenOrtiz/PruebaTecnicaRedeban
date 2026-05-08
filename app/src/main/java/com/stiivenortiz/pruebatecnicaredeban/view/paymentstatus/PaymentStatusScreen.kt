@@ -22,9 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Button
@@ -40,6 +38,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -120,7 +121,7 @@ fun PaymentStatusScreen(
                         PaymentStatusContent(
                             icon = {
                                 RotatingIcon(
-                                    imageVector = Icons.Default.Build
+                                    painter = painterResource(R.drawable.icon_config)
                                 )
                             },
                             title = stringResource(R.string.payment_status_starting),
@@ -133,7 +134,7 @@ fun PaymentStatusScreen(
                         PaymentStatusContent(
                             icon = {
                                 RotatingIcon(
-                                    imageVector = Icons.Default.Search
+                                    painter = painterResource(R.drawable.icon_hourglass)
                                 )
                             },
                             title = stringResource(R.string.payment_status_pending),
@@ -176,7 +177,7 @@ fun PaymentStatusScreen(
                         PaymentStatusContent(
                             icon = {
                                 StatusIcon(
-                                    imageVector = Icons.Default.Close,
+                                    imageVector = Icons.Default.Warning,
                                     backgroundColor = MaterialTheme.colorScheme.tertiary,
                                     iconColor = MaterialTheme.colorScheme.onTertiary
                                 )
@@ -252,7 +253,8 @@ private fun PaymentStatusContent(
 
 @Composable
 private fun RotatingIcon(
-    imageVector: androidx.compose.ui.graphics.vector.ImageVector
+    imageVector: ImageVector? = null,
+    painter: Painter? = null
 ) {
 
     val infiniteTransition = rememberInfiniteTransition(
@@ -282,20 +284,31 @@ private fun RotatingIcon(
         contentAlignment = Alignment.Center
     ) {
 
-        Icon(
-            imageVector = imageVector,
-            contentDescription = null,
-            modifier = Modifier
-                .size(64.dp)
-                .rotate(rotation),
-            tint = MaterialTheme.colorScheme.primary
-        )
+        if (imageVector != null) {
+            Icon(
+                imageVector = imageVector,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(64.dp)
+                    .rotate(rotation),
+                tint = MaterialTheme.colorScheme.primary
+            )
+        } else if (painter != null) {
+            Icon(
+                painter = painter,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(64.dp)
+                    .rotate(rotation),
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
     }
 }
 
 @Composable
 private fun StatusIcon(
-    imageVector: androidx.compose.ui.graphics.vector.ImageVector,
+    imageVector: ImageVector,
     backgroundColor: Color,
     iconColor: Color
 ) {

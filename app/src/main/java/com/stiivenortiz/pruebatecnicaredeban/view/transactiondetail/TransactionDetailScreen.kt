@@ -31,6 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.stiivenortiz.pruebatecnicaredeban.R
+import com.stiivenortiz.pruebatecnicaredeban.ui.theme.failed
+import com.stiivenortiz.pruebatecnicaredeban.ui.theme.informative
+import com.stiivenortiz.pruebatecnicaredeban.ui.theme.success
 import com.stiivenortiz.pruebatecnicaredeban.view.core.components.transactiondetail.DetailRow
 import com.stiivenortiz.pruebatecnicaredeban.view.core.mapper.toStringRes
 import com.stiivenortiz.pruebatecnicaredeban.view.core.model.PaymentInput
@@ -50,9 +53,8 @@ fun TransactionDetailScreen(
 
     Scaffold(
         bottomBar = {
-            if (transaction != null) {
+            if (transaction != null)
                 BottomActions(transaction, onVoid, onFinish)
-            }
         }
     ) { padding ->
         Box(
@@ -90,18 +92,18 @@ fun TransactionDetailScreen(
                                     transaction.id.toString()
                                 )
 
+                                DetailRow(
+                                    stringResource(R.string.transaction_detail_type),
+                                    stringResource(transaction.type.toStringRes())
+                                )
+
                                 if (transaction.maskPan.isNotBlank())
                                     DetailRow(
                                         stringResource(R.string.transaction_detail_card),
                                         transaction.maskPan
                                     )
 
-                                DetailRow(
-                                    stringResource(R.string.transaction_detail_type),
-                                    stringResource(transaction.type.toStringRes())
-                                )
-
-                                if (transaction.receiptId.isNotBlank())
+                                if (transaction.receiptId.isNotBlank() && transaction.receiptId != "null")
                                     DetailRow(
                                         stringResource(R.string.transaction_detail_receipt),
                                         transaction.receiptId
@@ -215,11 +217,16 @@ fun TransactionHeaderCard(transaction: TransactionUiModel) {
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
             Spacer(modifier = Modifier.height(8.dp))
+
             Text(
                 text = stringResource(transaction.status.toStringRes()).uppercase(),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = when (transaction.status) {
+                    TransactionUiStatus.APPROVED -> success
+                    TransactionUiStatus.DECLINED -> failed
+                    TransactionUiStatus.PENDING -> informative
+                }
             )
         }
     }
