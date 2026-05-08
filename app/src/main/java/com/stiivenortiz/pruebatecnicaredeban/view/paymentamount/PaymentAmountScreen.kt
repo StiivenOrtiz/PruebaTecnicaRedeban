@@ -38,6 +38,7 @@ fun PaymentAmountScreen(
 ) {
 
     val amount by viewModel.amount.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val formattedAmount = viewModel.getFormattedAmount(amount)
 
     Scaffold(
@@ -51,8 +52,9 @@ fun PaymentAmountScreen(
             ) {
 
                 Button(
-                    onClick = { onContinue(PaymentInput(amount = amount)) },
-                    enabled = amount.isNotEmpty() && (amount.toDoubleOrNull() ?: 0.0) > 0,
+                    onClick = { viewModel.processPayment(onContinue) },
+                    enabled = !isLoading && amount.isNotEmpty() &&
+                            (amount.toDoubleOrNull() ?: 0.0) > 0,
                     modifier = Modifier
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(20.dp),
