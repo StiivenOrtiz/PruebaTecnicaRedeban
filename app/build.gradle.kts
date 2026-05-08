@@ -1,3 +1,22 @@
+import java.io.FileInputStream
+import java.util.Properties
+
+fun getSecret(key: String, default: String): String {
+    val env = System.getenv(key)
+    if (!env.isNullOrBlank()) return env
+
+    val properties = Properties()
+    val localPropertiesFile = project.rootProject.file("local.properties")
+
+    if (localPropertiesFile.exists()) {
+        properties.load(FileInputStream(localPropertiesFile))
+        val prop = properties.getProperty(key)
+        if (!prop.isNullOrBlank()) return prop
+    }
+
+    return default
+}
+
 plugins {
     // Android
     alias(libs.plugins.android.application)
@@ -42,13 +61,13 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                "\"https://test-android-redeban.proxy.beeceptor.com/\""
+                "\"${getSecret("BASE_URL", "https://default.com/")}\""
             )
 
             buildConfigField(
                 "String",
                 "AUTHORIZATION",
-                "\"Basic MDAwMTIzMDAwQUJD\""
+                "\"${getSecret("AUTHORIZATION", "n/a")}\""
             )
         }
 
@@ -58,13 +77,13 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                "\"https://test-android-redeban.proxy.beeceptor.com/\""
+                "\"${getSecret("BASE_URL", "https://test.com/")}\""
             )
 
             buildConfigField(
                 "String",
                 "AUTHORIZATION",
-                "\"Basic MDAwMTIzMDAwQUJD\""
+                "\"${getSecret("AUTHORIZATION", "n/a")}\""
             )
         }
     }

@@ -26,6 +26,12 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew assembleDebug
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          AUTHORIZATION: ${{ secrets.AUTHORIZATION }}
 
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          AUTHORIZATION: ${{ secrets.AUTHORIZATION }}
