@@ -25,12 +25,12 @@ fun NavigationWrapper() {
         composable<Dashboard> {
             DashboardScreen(
                 onTransactionClick = { id ->
-                    navController.navigate(
+                    navController.navigateSafe(
                         TransactionDetail(transactionId = id)
                     )
                 },
                 onPayClick = {
-                    navController.navigate(PaymentAmount)
+                    navController.navigateSafe(PaymentAmount)
                 }
             )
         }
@@ -41,10 +41,10 @@ fun NavigationWrapper() {
             TransactionDetailScreen(
                 transactionId = args.transactionId,
                 onVoid = {
-                    navController.navigate(PaymentStatus(paymentInput = it))
+                    navController.navigateSafe(PaymentStatus(paymentInput = it))
                 },
                 onFinish = {
-                    navController.popBackStack()
+                    navController.popBackStackSafe<TransactionDetail>()
                 }
             )
         }
@@ -52,10 +52,10 @@ fun NavigationWrapper() {
         composable<PaymentAmount> {
             PaymentAmountScreen(
                 onCancel = {
-                    navController.popBackStack()
+                    navController.popBackStackSafe<PaymentAmount>()
                 },
                 onContinue = {
-                    navController.navigate(PaymentStatus(paymentInput = it)) {
+                    navController.navigateSafe(PaymentStatus(paymentInput = it)) {
                         popUpTo(Dashboard) { inclusive = false }
                     }
                 }
@@ -68,7 +68,7 @@ fun NavigationWrapper() {
             PaymentStatusScreen(
                 input = args.paymentInput,
                 onFinished = { transactionId ->
-                    navController.navigate(
+                    navController.navigateSafe(
                         TransactionDetail(transactionId)
                     ) {
                         popUpTo(Dashboard) { inclusive = false }
