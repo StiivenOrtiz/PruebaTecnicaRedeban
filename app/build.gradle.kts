@@ -163,6 +163,7 @@ dependencies {
 
     // Mockk
     testImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
 
     // Coroutines Tests
     testImplementation(libs.kotlinx.coroutines.test)

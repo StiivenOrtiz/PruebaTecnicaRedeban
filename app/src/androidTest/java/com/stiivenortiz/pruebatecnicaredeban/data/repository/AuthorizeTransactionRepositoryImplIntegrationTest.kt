@@ -14,7 +14,7 @@ import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
-class AuthorizeTransactionRepositoryTest {
+class AuthorizeTransactionRepositoryImplIntegrationTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
