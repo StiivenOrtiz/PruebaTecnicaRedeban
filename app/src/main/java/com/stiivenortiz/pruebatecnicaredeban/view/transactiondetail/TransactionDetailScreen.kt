@@ -35,20 +35,17 @@ import com.stiivenortiz.pruebatecnicaredeban.view.core.mapper.toStringRes
 fun TransactionDetailScreen(
     viewModel: TransactionDetailViewModel = hiltViewModel(),
     transactionId: Long,
-    onBack : () -> Unit,
-    onVoid : () -> Unit,
+    onBack: () -> Unit,
+    onVoid: () -> Unit,
     onFinish: () -> Unit
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
     val transaction = uiState.transaction
 
     Scaffold(
         bottomBar = {
-
             if (transaction != null) {
-
                 Button(
                     onClick = { },
                     modifier = Modifier
@@ -86,7 +83,6 @@ fun TransactionDetailScreen(
                 }
 
                 transaction != null -> {
-
                     Column(
                         modifier = Modifier
                             .fillMaxSize()

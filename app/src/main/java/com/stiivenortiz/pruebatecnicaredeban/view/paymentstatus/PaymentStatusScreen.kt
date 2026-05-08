@@ -1,12 +1,15 @@
 package com.stiivenortiz.pruebatecnicaredeban.view.paymentstatus
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,7 +35,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.stiivenortiz.pruebatecnicaredeban.view.core.model.PaymentInput
 
 enum class PaymentStatus {
@@ -58,8 +61,7 @@ fun PaymentStatusScreen(
     viewModel: PaymentStatusViewModel = hiltViewModel(),
     onFinished: (Long) -> Unit
 ) {
-
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(input) {
         viewModel.startTransaction(input)
@@ -68,10 +70,13 @@ fun PaymentStatusScreen(
     Scaffold(
         bottomBar = {
 
-            if (
-                state.status == PaymentStatus.APPROVED ||
-                state.status == PaymentStatus.DECLINED ||
-                state.status == PaymentStatus.FAILED
+            AnimatedVisibility(
+                visible = state.status in listOf(
+                    PaymentStatus.APPROVED,
+                    PaymentStatus.DECLINED,
+                    PaymentStatus.FAILED
+                ),
+                enter = fadeIn() + expandVertically()
             ) {
 
                 Box(
@@ -82,7 +87,7 @@ fun PaymentStatusScreen(
                 ) {
 
                     Button(
-                        onClick = { onFinished(state.transactionId!!) },
+                        onClick = { state.transactionId?.let { onFinished(it) } },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary

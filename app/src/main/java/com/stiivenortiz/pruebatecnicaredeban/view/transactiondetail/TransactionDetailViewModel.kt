@@ -1,56 +1,47 @@
 package com.stiivenortiz.pruebatecnicaredeban.view.transactiondetail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiModel
-import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiStatus
-import com.stiivenortiz.pruebatecnicaredeban.view.core.model.TransactionUiType
+import com.stiivenortiz.pruebatecnicaredeban.domain.mapper.toUiModel
+import com.stiivenortiz.pruebatecnicaredeban.domain.usecase.GetTransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+
 @HiltViewModel
-class TransactionDetailViewModel @Inject constructor() : ViewModel() {
+class TransactionDetailViewModel @Inject constructor(
+    private val getTransactionUseCase: GetTransactionUseCase,
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(TransactionDetailUiState())
-    val uiState: StateFlow<TransactionDetailUiState> = _uiState.asStateFlow()
-
-    init {
-        loadTransaction()
+    private val transactionId: Long = checkNotNull(savedStateHandle["transactionId"]) {
+        "No se encontró el transactionId en los argumentos de navegación"
     }
 
-    private fun loadTransaction() {
-
-        viewModelScope.launch {
-
-            _uiState.update {
-                it.copy(isLoading = true)
-            }
-
-            delay(2000)
-
-            val mockTransaction = TransactionUiModel(
-                id = 123456,
-                amount = "$450.000",
-                maskPan = "1234 56** **** 7890",
-                type = TransactionUiType.SALE,
-                receiptId = "98765432",
-                date = "8:27 am | 7 mayo, 2026",
-                status = TransactionUiStatus.APPROVED,
-                isVoided = false
-            )
-
-            _uiState.update {
-                it.copy(
+    val uiState: StateFlow<TransactionDetailUiState> = getTransactionUseCase(transactionId)
+        .map { domainModel ->
+            if (domainModel != null) {
+                TransactionDetailUiState(
                     isLoading = false,
-                    transaction = mockTransaction
+                    transaction = domainModel.toUiModel(),
+                    errorMessage = null
+                )
+            } else {
+                TransactionDetailUiState(
+                    isLoading = false,
+                    transaction = null,
+                    errorMessage = "Transacción no encontrada"
                 )
             }
         }
-    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = TransactionDetailUiState(isLoading = true)
+        )
 }

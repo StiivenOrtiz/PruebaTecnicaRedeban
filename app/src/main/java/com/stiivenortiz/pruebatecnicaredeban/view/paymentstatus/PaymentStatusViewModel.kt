@@ -2,74 +2,53 @@ package com.stiivenortiz.pruebatecnicaredeban.view.paymentstatus
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.stiivenortiz.pruebatecnicaredeban.domain.model.TransactionBusinessStatus
+import com.stiivenortiz.pruebatecnicaredeban.domain.usecase.ProcessTransactionUseCase
 import com.stiivenortiz.pruebatecnicaredeban.view.core.model.PaymentInput
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PaymentStatusViewModel @Inject constructor() : ViewModel() {
+class PaymentStatusViewModel @Inject constructor(
+    private val processTransactionUseCase: ProcessTransactionUseCase
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PaymentStatusUiState())
-    val uiState: StateFlow<PaymentStatusUiState> = _uiState
-
-    private var hasStarted = false
+    val uiState: StateFlow<PaymentStatusUiState> = _uiState.asStateFlow()
 
     fun startTransaction(input: PaymentInput) {
-        if (hasStarted) return
-        hasStarted = true
+        if (_uiState.value.status != PaymentStatus.STARTING) return
 
         viewModelScope.launch {
+            _uiState.update { it.copy(status = PaymentStatus.PENDING) }
 
-            try {
-                _uiState.update {
-                    it.copy(
-                        status = PaymentStatus.STARTING,
-                        isLoading = true,
-                        error = null
-                    )
+            val result = processTransactionUseCase(
+                amount = input.amount,
+                transactionId = input.transactionId
+            )
+
+            result.fold(
+                onSuccess = { transaction ->
+                    _uiState.update {
+                        it.copy(
+                            status = if (transaction.businessStatus == TransactionBusinessStatus.APPROVED)
+                                PaymentStatus.APPROVED else PaymentStatus.DECLINED,
+                            transactionId = transaction.id,
+                            isLoading = false
+                        )
+                    }
+                },
+                onFailure = { error ->
+                    _uiState.update {
+                        it.copy(status = PaymentStatus.FAILED, isLoading = false)
+                    }
                 }
-
-                // Simula preparación
-                delay(3000)
-
-                _uiState.update {
-                    it.copy(status = PaymentStatus.PENDING)
-                }
-
-                // Simula espera datáfono
-                delay(4000)
-
-                val finalStatus = listOf(
-                    PaymentStatus.APPROVED,
-                    PaymentStatus.DECLINED,
-                    PaymentStatus.FAILED
-                ).random()
-
-                _uiState.update {
-                    it.copy(
-                        status = finalStatus,
-                        isLoading = false
-                    )
-                }
-
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        status = PaymentStatus.FAILED,
-                        isLoading = false,
-                        error = e.message
-                    )
-                }
-            }
+            )
         }
-    }
-
-    fun finish(onFinished: (Long) -> Unit, transactionId: Long?) {
-        onFinished(transactionId ?: -1L)
     }
 }

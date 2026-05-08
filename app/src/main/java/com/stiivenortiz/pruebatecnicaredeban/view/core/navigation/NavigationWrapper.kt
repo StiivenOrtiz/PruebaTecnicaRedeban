@@ -58,7 +58,7 @@ fun NavigationWrapper() {
                     navController.popBackStack()
                 },
                 onContinue = {
-                    navController.navigate(PaymentStatus)
+                    navController.navigate(PaymentStatus(paymentInput = it))
                 }
             )
         }

@@ -32,9 +32,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,38 +39,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.stiivenortiz.pruebatecnicaredeban.ui.theme.informative
-import java.text.NumberFormat
-import java.util.Locale
+import com.stiivenortiz.pruebatecnicaredeban.view.core.model.PaymentInput
 
 @Composable
 fun PaymentAmountScreen(
+    viewModel: PaymentAmountViewModel = hiltViewModel(),
     onCancel: () -> Unit,
-    onContinue: () -> Unit
+    onContinue: (PaymentInput) -> Unit
 ) {
 
-    var amount by remember {
-        mutableStateOf("")
-    }
-
-    val formattedAmount = remember(amount) {
-
-        if (amount.isEmpty()) {
-            "$0"
-        } else {
-
-            val number = amount.toLongOrNull() ?: 0L
-
-            NumberFormat
-                .getCurrencyInstance(Locale("es", "CO"))
-                .format(number)
-                .replace(",00", "")
-        }
-    }
+    val amount by viewModel.amount.collectAsStateWithLifecycle()
+    val formattedAmount = viewModel.getFormattedAmount(amount)
 
     Scaffold(
         bottomBar = {
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -83,8 +65,8 @@ fun PaymentAmountScreen(
             ) {
 
                 Button(
-                    onClick = { onContinue() },
-                    enabled = amount.isNotEmpty(),
+                    onClick = { onContinue(PaymentInput(amount = amount)) },
+                    enabled = amount.isNotEmpty() && (amount.toDoubleOrNull() ?: 0.0) > 0,
                     modifier = Modifier
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(20.dp),
@@ -148,14 +130,10 @@ fun PaymentAmountScreen(
 
             NumericKeyboard(
                 onNumberClick = { number ->
-                    if (amount.length < 10) {
-                        amount += number
-                    }
+                    viewModel.onNumberClick(number)
                 },
                 onBackspaceClick = {
-                    if (amount.isNotEmpty()) {
-                        amount = amount.dropLast(1)
-                    }
+                    viewModel.onBackspaceClick()
                 },
                 onCancelClick = { onCancel() }
             )

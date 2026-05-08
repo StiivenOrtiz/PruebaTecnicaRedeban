@@ -1,6 +1,5 @@
 package com.stiivenortiz.pruebatecnicaredeban.data.datasource.database.dao
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -63,4 +62,7 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE transaction_id = :id LIMIT 1")
     suspend fun getTransactionById(id: Long): TransactionEntity?
+
+    @Query("SELECT * FROM transactions WHERE transaction_id = :id LIMIT 1")
+    fun getTransactionByIdFlow(id: Long): Flow<TransactionEntity?>
 }
