@@ -84,9 +84,9 @@ fun DashboardScreen(
                     textAlign = TextAlign.Center
                 )
 
-                if (!uiState.isLoading && uiState.transactions.isEmpty()) {
+                if (!uiState.isLoading && uiState.transactions.isEmpty())
                     EmptyHistoryMessage()
-                } else {
+                else {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
@@ -152,14 +152,14 @@ private fun EmptyHistoryMessage() {
             tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)
         )
         Text(
-            text = "No hay transacciones todavía",
+            text = stringResource(R.string.dashboard_screen_empty_tx_text),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f),
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 16.dp)
         )
         Text(
-            text = "Las ventas que realices aparecerán en este historial.",
+            text = stringResource(R.string.dashboard_screen_empty_tx_description_text),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.4f),
             textAlign = TextAlign.Center

@@ -1,11 +1,8 @@
 package com.stiivenortiz.pruebatecnicaredeban.view.core.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Parcelize
 data class TransactionUiModel(
     val id: Long,
     val amount: String,
@@ -15,4 +12,4 @@ data class TransactionUiModel(
     val date: String,
     val status: TransactionUiStatus,
     val isVoided: Boolean
-) : Parcelable
+)

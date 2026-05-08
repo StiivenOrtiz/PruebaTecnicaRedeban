@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.stiivenortiz.pruebatecnicaredeban.R
 import com.stiivenortiz.pruebatecnicaredeban.view.core.components.transactiondetail.DetailRow
 import com.stiivenortiz.pruebatecnicaredeban.view.core.mapper.toStringRes
 import com.stiivenortiz.pruebatecnicaredeban.view.core.model.PaymentInput
@@ -84,17 +85,32 @@ fun TransactionDetailScreen(
                                 modifier = Modifier.padding(16.dp),
                                 verticalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
-                                DetailRow("ID Transacción", transaction.id.toString())
+                                DetailRow(
+                                    stringResource(R.string.transaction_detail_id),
+                                    transaction.id.toString()
+                                )
 
                                 if (transaction.maskPan.isNotBlank())
-                                    DetailRow("Tarjeta", transaction.maskPan)
+                                    DetailRow(
+                                        stringResource(R.string.transaction_detail_card),
+                                        transaction.maskPan
+                                    )
 
-                                DetailRow("Tipo", stringResource(transaction.type.toStringRes()))
+                                DetailRow(
+                                    stringResource(R.string.transaction_detail_type),
+                                    stringResource(transaction.type.toStringRes())
+                                )
 
                                 if (transaction.receiptId.isNotBlank())
-                                    DetailRow("Recibo", transaction.receiptId)
+                                    DetailRow(
+                                        stringResource(R.string.transaction_detail_receipt),
+                                        transaction.receiptId
+                                    )
 
-                                DetailRow("Fecha", transaction.date)
+                                DetailRow(
+                                    stringResource(R.string.transaction_detail_date),
+                                    transaction.date
+                                )
                             }
                         }
 
@@ -139,7 +155,11 @@ private fun BottomActions(
                     containerColor = MaterialTheme.colorScheme.error
                 )
             ) {
-                Text("Anular Transacción", fontWeight = FontWeight.Bold, color = Color.White)
+                Text(
+                    stringResource(R.string.transaction_detail_void_tx),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
             }
         }
 
@@ -149,7 +169,7 @@ private fun BottomActions(
             shape = RoundedCornerShape(20.dp)
         ) {
             Text(
-                text = if (transaction.isVoided) "Cerrar" else "Finalizar",
+                text = stringResource(R.string.transaction_detail_close),
                 fontWeight = FontWeight.Bold
             )
         }
@@ -166,7 +186,7 @@ fun VoidedBanner() {
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = "Esta transacción fue anulada",
+            text = stringResource(R.string.transaction_detail_void_alert),
             modifier = Modifier.padding(16.dp),
             color = MaterialTheme.colorScheme.error,
             fontWeight = FontWeight.Bold,

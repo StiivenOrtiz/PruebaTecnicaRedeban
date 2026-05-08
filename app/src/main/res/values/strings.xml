@@ -8,6 +8,8 @@
     <string name="dashboard_screen_payments_text">¡En pagos!</string>
     <string name="dashboard_screen_history_text">Historial de transacciones</string>
     <string name="dashboard_screen_charge_text">Cobrar</string>
+    <string name="dashboard_screen_empty_tx_text">No hay transacciones todavía</string>
+    <string name="dashboard_screen_empty_tx_description_text">Las ventas que realices aparecerán en este historial.</string>
 
     <string name="transaction_status_approved">Aprobada</string>
     <string name="transaction_status_declined">Declinada</string>
@@ -15,5 +17,31 @@
 
     <string name="transaction_type_sale">Compra</string>
     <string name="transaction_type_void">Anulación</string>
+
+    <string name="transaction_detail_id">ID Transacción</string>
+    <string name="transaction_detail_card">Tarjeta</string>
+    <string name="transaction_detail_type">Tipo</string>
+    <string name="transaction_detail_receipt">Recibo</string>
+    <string name="transaction_detail_date">Fecha</string>
+    <string name="transaction_detail_void_tx">Anular Transacción</string>
+    <string name="transaction_detail_close">Cerrar</string>
+    <string name="transaction_detail_void_alert">Esta transacción fue anulada"</string>
+
+    <string name="payment_status_finish">Finalizar</string>
+    <string name="payment_status_starting">Iniciando transacción</string>
+    <string name="payment_status_starting_description">Estamos preparando el cobro</string>
+    <string name="payment_status_pending">Pago pendiente</string>
+    <string name="payment_status_pending_description">Esperando confirmación del datáfono</string>
+    <string name="payment_status_approved">Pago aprobado</string>
+    <string name="payment_status_approved_description">La transacción fue realizada correctamente</string>
+    <string name="payment_status_declined">Pago declinado</string>
+    <string name="payment_status_declined_description">La entidad financiera rechazó la transacción</string>
+    <string name="payment_status_failed">Error en el pago</string>
+    <string name="payment_status_failed_description">Ocurrió un problema procesando la transacción</string>
+
+    <string name="payment_amount_pay">Pagar</string>
+    <string name="payment_amount_enter_amount">Ingrese el monto</string>
+
+
 
 </resources>

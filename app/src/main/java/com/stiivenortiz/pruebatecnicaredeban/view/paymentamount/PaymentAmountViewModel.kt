@@ -1,4 +1,4 @@
-package com.stiivenortiz.pruebatecnicaredeban.view.payment
+package com.stiivenortiz.pruebatecnicaredeban.view.paymentamount
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

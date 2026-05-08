@@ -8,7 +8,7 @@ import androidx.navigation.toRoute
 import com.stiivenortiz.pruebatecnicaredeban.view.core.model.PaymentInput
 import com.stiivenortiz.pruebatecnicaredeban.view.core.navigation.types.paymentInputType
 import com.stiivenortiz.pruebatecnicaredeban.view.dashboard.DashboardScreen
-import com.stiivenortiz.pruebatecnicaredeban.view.payment.PaymentAmountScreen
+import com.stiivenortiz.pruebatecnicaredeban.view.paymentamount.PaymentAmountScreen
 import com.stiivenortiz.pruebatecnicaredeban.view.paymentstatus.PaymentStatusScreen
 import com.stiivenortiz.pruebatecnicaredeban.view.transactiondetail.TransactionDetailScreen
 import kotlin.reflect.typeOf

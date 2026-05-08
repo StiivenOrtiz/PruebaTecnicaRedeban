@@ -40,20 +40,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.stiivenortiz.pruebatecnicaredeban.R
 import com.stiivenortiz.pruebatecnicaredeban.view.core.model.PaymentInput
-
-enum class PaymentStatus {
-    STARTING,
-    PENDING,
-    APPROVED,
-    DECLINED,
-    FAILED
-}
+import com.stiivenortiz.pruebatecnicaredeban.view.core.model.PaymentStatusProcess
 
 @Composable
 fun PaymentStatusScreen(
@@ -72,9 +67,9 @@ fun PaymentStatusScreen(
 
             AnimatedVisibility(
                 visible = state.status in listOf(
-                    PaymentStatus.APPROVED,
-                    PaymentStatus.DECLINED,
-                    PaymentStatus.FAILED
+                    PaymentStatusProcess.APPROVED,
+                    PaymentStatusProcess.DECLINED,
+                    PaymentStatusProcess.FAILED
                 ),
                 enter = fadeIn() + expandVertically()
             ) {
@@ -95,7 +90,7 @@ fun PaymentStatusScreen(
                     ) {
 
                         Text(
-                            text = "Finalizar",
+                            text = stringResource(R.string.payment_status_finish),
                             modifier = Modifier.padding(vertical = 6.dp),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
@@ -121,34 +116,31 @@ fun PaymentStatusScreen(
 
                 when (state) {
 
-                    PaymentStatus.STARTING -> {
-
+                    PaymentStatusProcess.STARTING -> {
                         PaymentStatusContent(
                             icon = {
                                 RotatingIcon(
                                     imageVector = Icons.Default.Build
                                 )
                             },
-                            title = "Iniciando transacción",
-                            description = "Estamos preparando el cobro"
+                            title = stringResource(R.string.payment_status_starting),
+                            description = stringResource(R.string.payment_status_starting_description)
                         )
                     }
 
-                    PaymentStatus.PENDING -> {
-
+                    PaymentStatusProcess.PENDING -> {
                         PaymentStatusContent(
                             icon = {
                                 RotatingIcon(
                                     imageVector = Icons.Default.Search
                                 )
                             },
-                            title = "Pago pendiente",
-                            description = "Esperando confirmación del datáfono"
+                            title = stringResource(R.string.payment_status_pending),
+                            description = stringResource(R.string.payment_status_pending_description)
                         )
                     }
 
-                    PaymentStatus.APPROVED -> {
-
+                    PaymentStatusProcess.APPROVED -> {
                         PaymentStatusContent(
                             icon = {
                                 StatusIcon(
@@ -157,13 +149,12 @@ fun PaymentStatusScreen(
                                     iconColor = MaterialTheme.colorScheme.onPrimary
                                 )
                             },
-                            title = "Pago aprobado",
-                            description = "La transacción fue realizada correctamente"
+                            title = stringResource(R.string.payment_status_approved),
+                            description = stringResource(R.string.payment_status_approved_description)
                         )
                     }
 
-                    PaymentStatus.DECLINED -> {
-
+                    PaymentStatusProcess.DECLINED -> {
                         PaymentStatusContent(
                             icon = {
                                 StatusIcon(
@@ -172,13 +163,12 @@ fun PaymentStatusScreen(
                                     iconColor = MaterialTheme.colorScheme.onError
                                 )
                             },
-                            title = "Pago declinado",
-                            description = "La entidad financiera rechazó la transacción"
+                            title = stringResource(R.string.payment_status_declined),
+                            description = stringResource(R.string.payment_status_declined_description)
                         )
                     }
 
-                    PaymentStatus.FAILED -> {
-
+                    PaymentStatusProcess.FAILED -> {
                         PaymentStatusContent(
                             icon = {
                                 StatusIcon(
@@ -187,8 +177,8 @@ fun PaymentStatusScreen(
                                     iconColor = MaterialTheme.colorScheme.onTertiary
                                 )
                             },
-                            title = "Error en el pago",
-                            description = "Ocurrió un problema procesando la transacción"
+                            title = stringResource(R.string.payment_status_failed),
+                            description = stringResource(R.string.payment_status_failed_description)
                         )
                     }
                 }

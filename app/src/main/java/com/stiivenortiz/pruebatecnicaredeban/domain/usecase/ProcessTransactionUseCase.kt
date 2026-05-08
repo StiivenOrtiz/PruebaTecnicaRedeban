@@ -1,8 +1,9 @@
 package com.stiivenortiz.pruebatecnicaredeban.domain.usecase
 
-import com.stiivenortiz.pruebatecnicaredeban.domain.model.TransactionModel
+import com.stiivenortiz.pruebatecnicaredeban.domain.mapper.toUiPaymentProcess
 import com.stiivenortiz.pruebatecnicaredeban.domain.repository.AnnulmentTransactionRepository
 import com.stiivenortiz.pruebatecnicaredeban.domain.repository.AuthorizeTransactionRepository
+import com.stiivenortiz.pruebatecnicaredeban.view.core.model.PaymentProcess
 import javax.inject.Inject
 
 class ProcessTransactionUseCase @Inject constructor(
@@ -12,19 +13,19 @@ class ProcessTransactionUseCase @Inject constructor(
     suspend operator fun invoke(
         amount: String? = null,
         transactionId: Long? = null
-    ): Result<TransactionModel> {
+    ): Result<PaymentProcess> {
         return runCatching {
             when {
                 transactionId != null -> {
-                    annulRepository.annulTransaction(transactionId)
-                        ?: throw Exception("No se encontró la transacción original")
+                    annulRepository.annulTransaction(transactionId)?.toUiPaymentProcess()
+                        ?: throw Exception("Original transaction not found")
                 }
 
                 amount != null -> {
-                    authRepository.authTransaction(amount)
+                    authRepository.authTransaction(amount).toUiPaymentProcess()
                 }
 
-                else -> throw IllegalArgumentException("Faltan parámetros para procesar")
+                else -> throw IllegalArgumentException("Parameters are missing")
             }
         }
     }
